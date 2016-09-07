@@ -1,3 +1,8 @@
+// This program will genrate a random cost function 
+// based on coordinates of robots and tasks generated
+// randomly.
+// The x and y coordinates of both lies between [0,500].
+// The cost between a task and a robot Cij=vectr distance between Robot Ri and task Tj. 
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -7,8 +12,7 @@ int n;
 typedef struct coord{
 	int x;
 	int y;
-}
-coord;
+}coord;
 
 coord set[1000];
 int set_iter=0;
