@@ -4,6 +4,7 @@ import xlsxwriter
 import numpy
 import time
 
+os.system("gcc Cost_matrix.c -lm -o Cost_matrix")	
 for j in range(10,110,10):
 	workbook=xlsxwriter.Workbook('Algo_'+str(j)+'.xlsx')
 	worksheet=workbook.add_worksheet()
@@ -25,7 +26,6 @@ for j in range(10,110,10):
 	print>>f,"n=",j
 	f.close()
 	for i in range(1,26):
-		os.system("gcc random_generator.c -lm -o random_generator")	
 		os.system("./Cost_matrix < out.txt > Algorithm_"+str(j)+"/Hungarian_input/input_hungarian_"+str(j)+"_"+str(i)+".txt")
 		os.system("./random_generator_normalize < Algorithm_"+str(j)+"/Hungarian_input/input_hungarian_"+str(j)+"_"+str(i)+".txt >Algorithm_"+str(j)+"/Algorithm_input/input_algorithm_"+str(j)+"_"+str(i)+".txt")
 		os.system("./rank_maker < Algorithm_"+str(j)+"/Hungarian_input/input_hungarian_"+str(j)+"_"+str(i)+".txt >Algorithm_"+str(j)+"/Stable_Marriage_input/Rank_Matrix_"+str(j)+"_"+str(i)+".txt")
