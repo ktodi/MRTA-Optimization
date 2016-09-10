@@ -1,4 +1,5 @@
-//
+//This is a predefined algorithm.
+//We have made use of previously written code.
 //(Minimum) Assignment Problem by Hungarian Algorithm
 //taken from Knuth's Stanford Graphbase
 //
@@ -7,9 +8,6 @@
 #include <string.h>
 
 #define INF (0x7FFFFFFF)
-
-//#define size1 (10)
-//#define n (10)
 
 #define verbose (1)
 int n;
@@ -20,9 +18,8 @@ void hungarian()
 {
 int i,j;
 int false=0,true=1;
-//int x;
 
-unsigned int m=n;//n=n;
+unsigned int m=n;
 int k;
 int l;
 double s;
@@ -65,14 +62,6 @@ for (l=0;l<n;l++)
     for (k=0;k<n;k++)
       new_matrix[k][l]-=s;
 }
-for(row=0;row<n;row++)
-{
-  for(col=0;col<n;col++)
-  {
-    // printf("%lf ",new_matrix[row][col]);
-  }
-  // printf("\n");
-}
 // End subtract column minima in order to start with lots of zeroes 12
 
 // Begin initial state 16
@@ -91,19 +80,18 @@ for (k=0;k<m;k++)
     if (new_matrix[k][l]<s)
       s=new_matrix[k][l];
   row_dec[k]=s;
-  // printf("s=%lf\n",s);
   for (l=0;l<n;l++)
     if (s==new_matrix[k][l] && row_mate[l]<0)
     {
       col_mate[k]=l;
       row_mate[l]=k;
-      if (verbose)
-        // printf("matching col %d==row %d\n",l,k);
+      // if (verbose)
+      //   // printf("matching col %d==row %d\n",l,k);
       goto row_done;
     }
   col_mate[k]= -1;
-  if (verbose)
-    // printf("node %d: unmatched row %d\n",t,k);
+  // if (verbose)
+  //   // printf("node %d: unmatched row %d\n",t,k);
   unchosen_row[t++]=k;
 row_done:
   ;
@@ -117,8 +105,8 @@ if (t==0)
 unmatched=t;
 while (1)
 {
-  if (verbose)
-   // printf("Matched %d rows.\n",m-t);
+  // if (verbose)
+  //  // printf("Matched %d rows.\n",m-t);
   q=0;
   while (1)
   {
@@ -134,7 +122,6 @@ while (1)
           {
             double del;
             del=new_matrix[k][l]-s+col_inc[l];
-            // printf(" row,del,l=%d,%lf,%d\n",k,del,l);
             if (del<slack[l])
             {
               if (del==0)
@@ -143,9 +130,9 @@ while (1)
                   goto breakthru;
                 slack[l]=0;
                 parent_row[l]=k;
-                if (verbose)
-                  // printf("node %d,%d: row %d==col %d--row %d\n",q,
-                    // t,row_mate[l],l,k);
+                // if (verbose)
+                //   // printf("node %d,%d: row %d==col %d--row %d\n",q,
+                //     // t,row_mate[l],l,k);
                 unchosen_row[t++]=row_mate[l];
               }
               else
@@ -175,10 +162,10 @@ while (1)
         {
           // Begin look at a new zero 22
           k=slack_row[l];
-          if (verbose)
-            // printf(
-            //  "Decreasing uncovered elements by %f produces zero at [%d,%d]\n",
-            //   s,k,l);
+          // if (verbose)
+          //   // printf(
+          //   //  "Decreasing uncovered elements by %f produces zero at [%d,%d]\n",
+          //   //   s,k,l);
           if (row_mate[l]<0)
           {
             for (j=l+1;j<n;j++)
@@ -189,8 +176,8 @@ while (1)
           else
           {
             parent_row[l]=k;
-            if (verbose)
-             // printf("node %d: row %d==col %d--row %d\n",t,row_mate[l],l,k);
+            // if (verbose)
+            //  // printf("node %d: row %d==col %d--row %d\n",t,row_mate[l],l,k);
             unchosen_row[t++]=row_mate[l];
           }
           // End look at a new zero 22
@@ -202,15 +189,15 @@ while (1)
   }
 breakthru:
   // Begin update the matching 20
-  if (verbose)
-   // printf("Breakthrough at node %d of %d!\n",q,t);
+  // if (verbose)
+  //  // printf("Breakthrough at node %d of %d!\n",q,t);
   while (1)
   {
     j=col_mate[k];
     col_mate[k]=l;
     row_mate[l]=k;
-    if (verbose)
-     // printf("rematching col %d==row %d\n",l,k);
+    // if (verbose)
+    //  // printf("rematching col %d==row %d\n",l,k);
     if (j<0)
       break;
     k=parent_row[j];
@@ -229,8 +216,8 @@ breakthru:
   for (k=0;k<m;k++)
     if (col_mate[k]<0)
     {
-      if (verbose)
-       // printf("node %d: unmatched row %d\n",t,k);
+      // if (verbose)
+      //  // printf("node %d: unmatched row %d\n",t,k);
       unchosen_row[t++]=k;
     }
   // End get ready for another stage 17
@@ -260,16 +247,13 @@ done:
 for (i=0;i<m;++i)
 {
   Result[i][col_mate[i]]=true;
- // printf("%d - %d\n", i, col_mate[i]);
 }
 for (k=0;k<m;++k)
 {
   for (l=0;l<n;++l)
   {
-    // printf("%lf ",new_matrix[k][l]-row_dec[k]+col_inc[l]);
     new_matrix[k][l]=new_matrix[k][l]-row_dec[k]+col_inc[l];
   }
-  // printf("\n");
 }
 for (i=0;i<m;i++)
   cost+=row_dec[i];
@@ -283,7 +267,6 @@ void main()
 int y,x,i;
 
 scanf("%d\n",&n);
-// printf("%d\n",n);
 new_matrix=(double**)malloc(n*sizeof(double*));
 for(x=0;x<n;x++)
   new_matrix[x]=(double*)malloc(n*sizeof(double));
