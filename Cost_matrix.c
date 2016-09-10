@@ -1,4 +1,4 @@
-// This program will genrate a random cost function 
+// This program will generate a random cost function 
 // based on coordinates of robots and tasks generated
 // randomly.
 // The x and y coordinates of both lies between [0,500].
