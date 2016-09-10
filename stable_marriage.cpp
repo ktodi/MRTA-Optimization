@@ -1,12 +1,17 @@
+//This here implements the famous Stable Marriage algorithm
+//For matching of Robots and Tasks in Multi-Robot Task Allocation.
+
 #include <cstdlib>
 #include <iostream>
 #include <stack>
 #include <set>
 using namespace std;
+
 typedef struct node{
     int task_id;
     int rob_id;
 }node;
+
 int n;
 double **input;
 int *count_rank;
@@ -114,15 +119,7 @@ int main(){
         	robot_rank[i][j]=dummy;
         }
     }
-    // robot_rank[0][0]=0;
-    // robot_rank[0][1]=2;
-    // robot_rank[0][2]=1;
-    // robot_rank[1][0]=2;
-    // robot_rank[1][1]=0;
-    // robot_rank[1][2]=1;
-    // robot_rank[2][0]=2;
-    // robot_rank[2][1]=1;
-    // robot_rank[2][2]=0;
+
     task_rank=(int**)malloc(n*sizeof(int*));
     for(int i=0;i<n;i++)
     {
@@ -136,15 +133,7 @@ int main(){
         	task_rank[i][j]=dummy;
         }
     }
-    // task_rank[0][0]=1;
-    // task_rank[0][1]=2;
-    // task_rank[0][2]=0;
-    // task_rank[1][0]=1;
-    // task_rank[1][1]=0;
-    // task_rank[1][2]=2;
-    // task_rank[2][0]=2;
-    // task_rank[2][1]=1;
-    // task_rank[2][2]=0;
+   
     input=(double**)malloc(n*sizeof(double*));
     for(int i=0;i<n;i++)
     {
