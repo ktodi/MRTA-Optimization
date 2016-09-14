@@ -1,6 +1,5 @@
 //This here implements the famous Stable Marriage algorithm
 //For matching of Robots and Tasks in Multi-Robot Task Allocation.
-
 #include <cstdlib>
 #include <iostream>
 #include <stack>
@@ -66,14 +65,10 @@ void stable_marriage()
     {
         int test_robot=prospect_robot.top();
         prospect_robot.pop();
-      //  cout<<test_robot<<" has got the chance"<<endl;
-        int dum_counter;
         int proposed_task=robot_rank[test_robot][count_rank[test_robot]];
-      //  cout<<test_robot<<" proposed to "<<proposed_task<<endl;
         count_rank[test_robot]++;
         if(isfree(proposed_task))
         {
-      //  	cout<<"is free"<<endl;
             engaged[arr_counter].rob_id=test_robot;
             engaged[arr_counter].task_id=proposed_task;
             free_task.erase(proposed_task);
@@ -82,16 +77,12 @@ void stable_marriage()
         else{
             
             dum_counter=get_counter(proposed_task);
-       //     cout<<"dum_counter is "<<dum_counter<<endl;
             int robot_dash=engaged[dum_counter].rob_id;
-        //    cout<<"compared to robot "<<robot_dash<<endl;
             if(rankgreater(robot_dash,proposed_task,test_robot))
             {
-        //    	cout<<"is free and rank greater"<<endl;
                 prospect_robot.push(test_robot);
             }
             else{
-         //   	cout<<"is free and rank not greater"<<endl;
                 engaged[dum_counter].rob_id=test_robot;
                 prospect_robot.push(robot_dash);
             }
