@@ -1,3 +1,10 @@
+//This the devised algorithm which works on the principle of normalization and
+//sequential matching with interrobot communication.Here sequentially a robot finds its optimum task
+//It communicates its choice to all other robots and based on optimum tasks for the rest of the robots
+//the reply back.If the optimum task of 2 or more robot matches , they compete between each other and the one
+//with least cost gets the task assigned.
+//Here we have implemented this feature by implementing 2-D Linked List.
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
