@@ -76,7 +76,7 @@ void stable_marriage()
         }
         else{
             
-            dum_counter=get_counter(proposed_task);
+            int dum_counter=get_counter(proposed_task);
             int robot_dash=engaged[dum_counter].rob_id;
             if(rankgreater(robot_dash,proposed_task,test_robot))
             {
