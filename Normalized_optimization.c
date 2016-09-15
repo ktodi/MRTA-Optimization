@@ -14,12 +14,20 @@ int n;
 int turn;
 int final_sol_iter=0;
 int contender_iter=0;
+
+//A task node is a node of a linked list 
+//with cost as its value and task_id as its id and pointing
+//to next node.
 typedef struct task_node{
 	int task_id;
 	double cost;
 	struct task_node *next;
 }task_node;
 
+//A robot node is a node of a linked list 
+//with best task as and min_cost for that robot
+//and linked list of task nodes and a pointer pointing
+//to next node.
 typedef struct robot_node{
 	int rob_id;
 	int best_task;
@@ -31,6 +39,7 @@ typedef struct robot_node{
 
 robot_node* initial_head;
 
+//This provides with the optimal matching solution.
 typedef struct 
 optimal{
 	int opt_rob;
@@ -42,6 +51,8 @@ optimal{
 optimal *final_sol;
 optimal *contender_arr;
 
+//The below two function initilizes a task node
+//and robot nodes and allocates size to them.
 task_node* initialize_task_node()
 {
 	task_node* newtask=(task_node*)malloc(sizeof(task_node));
@@ -63,7 +74,7 @@ robot_node* initialize_rob_node()
 	return newrob;
 }
 
-
+//This initializes and allocates memmory for a new optimal node.
 optimal* initial_optimal()
 {
 	optimal* new_optimal=(optimal*)malloc(sizeof(optimal));
@@ -72,7 +83,8 @@ optimal* initial_optimal()
 	new_optimal->cost=0;
 	return new_optimal;
 }
-
+//The 4 functions below are insert functionf for both robots and tasks in the doubley linked list.
+//Robots are in vertical manner and tasks in horizontal manner.
 void insertFront_robot(robot_node** curr,robot_node* to_insert)
 {
 	to_insert->next=*curr;
@@ -98,6 +110,8 @@ void insertAfter_task(task_node* curr,task_node* to_insert)
 
 }
 
+//This will design the 2-D Linked list from the read 
+//input so that further operations can be performed on it.
 robot_node* read_list()
 {
 	int i,j;
@@ -149,6 +163,8 @@ robot_node* read_list()
 	return head;
 }
 
+//To prevent the anomaly caused by removing front robot in the list.
+//This function manages this problem.
 void remove_Frontrobot(robot_node** head)
 {
 	robot_node* temp=*head;
@@ -156,6 +172,8 @@ void remove_Frontrobot(robot_node** head)
 	free(temp);
 }
 
+//This removes the assigned robot and decrease the vertical length by 
+//1 for all tasks.
 void remove_robot_at(int rob_id)
 {
 	robot_node* curr;
@@ -194,6 +212,9 @@ void remove_robot_at(int rob_id)
 
 }
 
+//This will remove a particular task from all the robot's linked list 
+//of tasks.This will decrease the length of all horizontal linked list
+//by 1.
 void remove_task_at(int task_id,robot_node* temp)
 {
 	task_node* head_task;
@@ -237,6 +258,8 @@ else
 }
 }
 
+//This function returns the contender which is optimal with respect to the
+//task for which they are competing.
 optimal* find_min_contender(optimal* curr)
 {
 	
@@ -260,6 +283,8 @@ optimal* find_min_contender(optimal* curr)
 return contest;
 }
 
+//Every time for new iteration/new chance for a robot
+//this is initialized to manage the list of contenders.
 void clear_contender_arr()
 {
 	int i;
@@ -299,6 +324,8 @@ optimal* my_best(robot_node* choice)
 	return new;
 }
 
+//This will print the final matching and total cost,
+//be it a output file or STDOUT.
 void print_list(robot_node* head)
 {
 	robot_node* temp=head;
@@ -315,6 +342,9 @@ void print_list(robot_node* head)
 	}
 }
 
+//This is the main function implementing the proposed algorithm.
+//It will iterate till all the robots are not assigned a task.
+//and it will itearte atleast n times to give n channces to n robots.
 void Rob_Algorithm(robot_node* traverse)
 {
 	robot_node* curr=traverse;
