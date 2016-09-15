@@ -1,5 +1,9 @@
 //This here implements the famous Stable Marriage algorithm
 //For matching of Robots and Tasks in Multi-Robot Task Allocation.
+//This algorithm uses the concept of ranking of bbot tasks and robots to each other.
+//Each robot chooses its best available option and if there is a conflict 
+//task decides which robot gets preference based on ranking.
+
 #include <cstdlib>
 #include <iostream>
 #include <stack>
@@ -22,6 +26,9 @@ int arr_counter=0;
 set<int> free_task;
 stack<int> temp;
 
+//This function looks for the task
+//if it has been matched till now or not.
+//If it is matched it returns false else true.
 bool isfree(int j)
 {
     set<int>::iterator it;
@@ -31,6 +38,8 @@ bool isfree(int j)
     return false;
 }
 
+//This is helful to get the counter position of
+//queried task in the engaged array.
 int get_counter(int task)
 {
     int i;
@@ -41,6 +50,9 @@ int get_counter(int task)
         }
         return i;
 }
+
+//This gives the rank of robot for that particular task
+//as formulated in task_rank matrix.
 int get_rank_pos(int task,int robot)
 {
     int i;
@@ -51,6 +63,11 @@ int get_rank_pos(int task,int robot)
     }
     return i-1;
 }
+
+//This function checks for if the new candidate robot
+//has better rank then already assigned robot to that particular task.
+//It returns true if previously assigned robot is better than new
+//robot else false.
 bool rankgreater(int engaged_robot,int task,int test_robot)
 {
     if(get_rank_pos(task,engaged_robot)<get_rank_pos(task,test_robot))
@@ -59,6 +76,8 @@ bool rankgreater(int engaged_robot,int task,int test_robot)
         return false;
 }
 
+//This is the main algorithm which perform the stable marriage
+//algorithm as proposed above on the data to give appropriate matching.
 void stable_marriage()
 {
     while(!prospect_robot.empty())
@@ -96,6 +115,13 @@ int main(){
     cin>>n;
     int dummy;
     double double_dummy;
+    //The task_rank are rob_rank are rank matrics
+    //of both task and robot based on robots and tasks respectively
+    //.This is generated before by rank_generator
+
+    //The count rank here stores the counter of each robot at its ranking list.
+    //This is helpful to avoid robots to again consider previously operated rank 
+    //for new operation.
     count_rank=(int*)malloc(n*sizeof(int));
     robot_rank=(int**)malloc(n*sizeof(int*));
     for(int i=0;i<n;i++)
@@ -138,10 +164,12 @@ int main(){
        		input[i][j]=double_dummy;
         }
     }
+
     for(int i=0;i<n;i++)
     {
         count_rank[i]=0;
     }
+
     engaged=(node*)malloc(n*sizeof(node));
     for(int i=n-1;i>=0;i--)
     {
