@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <random>
+#include <functional>
 using namespace std;
 
 //MAX is the maximum value a cost can attain
@@ -18,6 +20,27 @@ using namespace std;
 
 #define MAX sqrt(pow(500,2.0)+pow(500,2.0))
 #define epsilon 0.00000001
+
+// int random_between_two_int()    
+// {    
+//     double lower_bound = 1;
+//    double upper_bound = 250;
+//    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+//    std::default_random_engine re;
+//    double a_random_double = unif(re);
+//    return a_random_double;  
+// }
+class Rand_double
+{
+public:
+    Rand_double(double low, double high)
+    :r(std::bind(std::uniform_real_distribution<>(low,high),std::default_random_engine())){}
+
+    double operator()(){ return r(); }
+
+private:
+    std::function<double()> r;
+};
 
 //This will decide if all robots are happy or not
 bool all_happy(vector<bool> &happy)
@@ -33,7 +56,7 @@ bool all_happy(vector<bool> &happy)
 //This will switch the tasks for two robots
 //when one of them is not happy and it maximizes on task
 //alloted to second one.
-void switch_task(int ri,int rj,vector<int> &allotment,vector<int> &happy)
+void switch_task(int ri,int rj,vector<int> &allotment,vector<bool> &happy)
 {
 	int temp=allotment[ri];
 	allotment[ri]=allotment[rj];
@@ -111,14 +134,14 @@ double profit_without_assignedtask(vector<vector<double> > &value,vector<double>
 }
 
 //This is the main algorithm which does matching based on economic game
-void economic_matching(vector<vector<double> > &input,vector<int> &price, vector<int> &allotment,vector<bool> &happy,int n)
+void economic_matching(vector<vector<double> > &value,vector<double> &price, vector<int> &allotment,vector<bool> &happy,int n)
 {
 	int robot,task;
 	while(!all_happy(happy))
 	{
 		for(int rob=1;rob<=n;rob++)
 		{
-			if(!is_robot_happy(value, price,rob,n,allotment,happy))
+			if(!happy[rob] && !is_robot_happy(value, price,rob,n,allotment,happy))
 			{
 				task=max_profit_task(value,price,rob,n);
 				robot=find_robot(allotment,task,n);
@@ -132,6 +155,7 @@ void economic_matching(vector<vector<double> > &input,vector<int> &price, vector
 }
 int main()
 {
+	int n;
 	cin>>n;
 	vector<vector<double> > input(n+1,vector<double> (n+1));
 	vector<bool> happy(n+1,false);
@@ -139,8 +163,7 @@ int main()
 	{
 		for(int j=1;j<=n;j++)
 		{
-			cin>>x;
-			input[i][j]=x;
+			cin>>input[i][j];
 		}
 	}
 	vector<vector<double> > value(n+1,vector<double> (n+1));
@@ -148,7 +171,6 @@ int main()
 	{
 		for(int j=1;j<=n;j++)
 		{
-			cin>>x;
 			value[i][j]=MAX-input[i][j];
 		}
 	}
@@ -158,18 +180,24 @@ int main()
 	{
 		allotment[i]=i;
 	}
+	Rand_double rd{1,250};
+	for(int i=1;i<=n;i++)
+	{
+		price[i]=rd();
+	}
+
 	economic_matching(value,price,allotment,happy,n);
 
 	//Here the total cost incurred in matching and the 
 	//matching is formulated and is presented as output.
 	double total_cost=0;
-	for(i=1;i<=n;i++)
+	for(int i=1;i<=n;i++)
 	{
 		total_cost+=input[i][allotment[i]];
 	}
-	cout<<total_cost<<endl;
-	for(i=0;i<n;i++)
+	cout<<"Economic Cost is : "<<total_cost<<endl;
+	for(int i=1;i<=n;i++)
 	{
-		cout<<"<R"i",T"<<allotment[i]<<","<<input[i][allotment[i]]<<">"<<endl;
+		cout<<"<R"<<i<<",T"<<allotment[i]<<","<<input[i][allotment[i]]<<">"<<endl;
 	}
 }
