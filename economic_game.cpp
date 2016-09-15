@@ -21,15 +21,6 @@ using namespace std;
 #define MAX sqrt(pow(500,2.0)+pow(500,2.0))
 #define epsilon 0.00000001
 
-// int random_between_two_int()    
-// {    
-//     double lower_bound = 1;
-//    double upper_bound = 250;
-//    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-//    std::default_random_engine re;
-//    double a_random_double = unif(re);
-//    return a_random_double;  
-// }
 class Rand_double
 {
 public:
